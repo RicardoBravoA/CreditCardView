@@ -17,6 +17,7 @@
         <attr name="labelExpireDate" format="string" />
         <attr name="labelCVV" format="string" />
         <attr name="labelOwnerName" format="string" />
+        <attr name="labelZipCode" format="string" />
         <attr name="labelButtonPay" format="string" />
         <attr name="labelTotal" format="string" />
         <attr name="buttonPayBackground" format="integer" />

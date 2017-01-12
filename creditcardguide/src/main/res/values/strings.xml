@@ -18,6 +18,7 @@
     <string name="expiration">Expire date</string>
     <string name="cvv">CVV</string>
     <string name="owner_name">Owner name</string>
+    <string name="zip_code">Zip Code</string>
     <string name="owner_card">OWNER NAME</string>
     <string name="expiration_date">VALID THRU</string>
     <string name="portions">Installments</string>

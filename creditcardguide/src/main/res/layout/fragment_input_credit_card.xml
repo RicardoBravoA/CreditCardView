@@ -242,8 +242,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-
                 <include layout="@layout/view_name_credit_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+                <include layout="@layout/view_zip_code_credit_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

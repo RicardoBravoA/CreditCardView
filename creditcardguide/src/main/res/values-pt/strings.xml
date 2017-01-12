@@ -18,6 +18,7 @@
     <string name="expiration">Validade</string>
     <string name="cvv">Código de segurança</string>
     <string name="owner_name">Nome do titular</string>
+    <string name="zip_code">CEP do Endereço de Cobrança</string>
     <string name="owner_card">TITULAR DO CARTÃO</string>
     <string name="expiration_date">VALIDADE</string>
     <string name="portions">Parcelas</string>

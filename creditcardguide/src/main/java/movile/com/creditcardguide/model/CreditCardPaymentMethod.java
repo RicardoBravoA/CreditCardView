@@ -11,6 +11,7 @@ public class CreditCardPaymentMethod extends PaymentMethod {
     private Integer expireMonth;
     private Integer expireYear;
     private String securityCode;
+    private String zipCode;
     private IssuerCode issuerCode;
     private Integer installments;
 
@@ -18,9 +19,9 @@ public class CreditCardPaymentMethod extends PaymentMethod {
         super(Type.CREDIT_CARD);
     }
 
-    public CreditCardPaymentMethod(String creditCardNumber,
-                                   String creditCardName, Integer expireMonth, Integer expireYear, String securityCode,
-                                   IssuerCode issuerCode, Integer installments) {
+    public CreditCardPaymentMethod(String creditCardNumber, String creditCardName,
+                                   Integer expireMonth, Integer expireYear, String securityCode,
+                                   String zipCode, IssuerCode issuerCode, Integer installments) {
 
         super(Type.CREDIT_CARD);
         this.creditCardNumber = creditCardNumber;
@@ -28,6 +29,7 @@ public class CreditCardPaymentMethod extends PaymentMethod {
         this.expireMonth = expireMonth;
         this.expireYear = expireYear;
         this.securityCode = securityCode;
+        this.zipCode = zipCode;
         this.issuerCode = issuerCode;
         this.installments = installments;
 
@@ -78,6 +80,14 @@ public class CreditCardPaymentMethod extends PaymentMethod {
         this.securityCode = securityCode;
     }
 
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -105,6 +115,7 @@ public class CreditCardPaymentMethod extends PaymentMethod {
                 ", expireMonth=" + expireMonth +
                 ", expireYear=" + expireYear +
                 ", securityCode='" + securityCode + '\'' +
+                ", zipCode='" + zipCode + '\'' +
                 ", issuerCode=" + issuerCode + '\'' +
                 ", installments=" + installments;
     }

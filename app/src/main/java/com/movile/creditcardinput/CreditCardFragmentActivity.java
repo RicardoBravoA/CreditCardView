@@ -33,7 +33,8 @@ public class CreditCardFragmentActivity extends AppCompatActivity implements Act
         inputCardFragment = (CreditCardFragment) getFragmentManager().findFragmentById(R.id.frg_pay);
 
         inputCardFragment.setPagesOrder(CreditCardFragment.Step.FLAG, CreditCardFragment.Step.NUMBER,
-                CreditCardFragment.Step.EXPIRE_DATE, CreditCardFragment.Step.CVV, CreditCardFragment.Step.NAME);
+                CreditCardFragment.Step.EXPIRE_DATE, CreditCardFragment.Step.CVV, CreditCardFragment.Step.NAME,
+                CreditCardFragment.Step.ZIP_CODE);
 
         inputCardFragment.setListPurchaseOptions(getList(), 230.0);
     }

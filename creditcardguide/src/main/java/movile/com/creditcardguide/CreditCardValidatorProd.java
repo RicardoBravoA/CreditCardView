@@ -128,6 +128,14 @@ public class CreditCardValidatorProd extends CreditCardValidator {
                 && name.length() > 4 && name.trim().contains(" ");
     }
 
+    @Override
+    public boolean validateCreditCardZipCode(EditText creditCardZipCode, boolean update) {
+        String zipCode;
+        return creditCardZipCode != null
+                && !TextUtils.isEmpty(zipCode = creditCardZipCode.getText().toString().replaceAll(" ", ""))
+                && zipCode.length() == 9;
+    }
+
     public static boolean luhnTest(String number) {
 
         int s1 = 0, s2 = 0;

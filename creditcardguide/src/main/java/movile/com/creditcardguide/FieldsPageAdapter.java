@@ -39,6 +39,9 @@ public class FieldsPageAdapter extends PagerAdapter {
             case NAME:
                 resId = R.id.page_four;
                 break;
+            case ZIP_CODE:
+                resId = R.id.page_five;
+                break;
         }
 
         return viewHolder.findViewById(resId);
@@ -50,7 +53,7 @@ public class FieldsPageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return steps.size();
     }
 
     @Override

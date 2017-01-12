@@ -53,7 +53,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
     private static final int COMMON_MAX_CVV = 3;
 
     public enum Step {
-        FLAG, NUMBER, EXPIRE_DATE, CVV, NAME
+        FLAG, NUMBER, EXPIRE_DATE, CVV, NAME, ZIP_CODE
     }
 
     private static final String PURCHASE_OPTION_SELECTED = "PURCHASE_OPTION_SELECTED";
@@ -65,6 +65,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
     private EditText editExpireCard;
     private EditText editCVVCard;
     private EditText editNameCard;
+    private EditText editZipCodeCard;
 
     private CreditCardView creditCardView;
 
@@ -95,6 +96,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
     private TextView textLabelExpireDate;
     private TextView textLabelCVV;
     private TextView textLabelOwnerName;
+    private TextView textLabelZipCode;
     private TextView textLabelTotal;
 
     private String labelCardOwner;
@@ -103,6 +105,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
     private String labelExpireDate;
     private String labelCVV;
     private String labelOwnerName;
+    private String labelZipCode;
     private String labelButtonPay;
     private String labelTotal;
     private Drawable payBackground;
@@ -156,6 +159,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
             this.labelExpireDate = typedArray.getString(R.styleable.CreditCardFragment_labelExpireDate);
             this.labelCVV = typedArray.getString(R.styleable.CreditCardFragment_labelCVV);
             this.labelOwnerName = typedArray.getString(R.styleable.CreditCardFragment_labelOwnerName);
+            this.labelZipCode = typedArray.getString(R.styleable.CreditCardFragment_labelZipCode);
             this.labelButtonPay = typedArray.getString(R.styleable.CreditCardFragment_labelButtonPay);
             this.labelTotal = typedArray.getString(R.styleable.CreditCardFragment_labelTotal);
             this.payBackground = typedArray.getDrawable(R.styleable.CreditCardFragment_buttonPayBackground);
@@ -193,6 +197,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
         editExpireCard = (EditText) view.findViewById(R.id.ed_expire_credit_card);
         editCVVCard = (EditText) view.findViewById(R.id.ed_cvv_credit_card);
         editNameCard = (EditText) view.findViewById(R.id.ed_name_credit_card);
+        editZipCodeCard = (EditText) view.findViewById(R.id.ed_zip_code_credit_card);
         btEdit = (Button) view.findViewById(R.id.bt_edit);
         layoutPayment = (LinearLayout) view.findViewById(R.id.frg_input_card_layout_payment);
         layoutData = (FrameLayout) view.findViewById(R.id.frg_input_card_layout_data);
@@ -207,6 +212,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
         textLabelExpireDate = (TextView) view.findViewById(R.id.txt_label_expire_date);
         textLabelCVV = (TextView) view.findViewById(R.id.txt_label_cvv);
         textLabelOwnerName = (TextView) view.findViewById(R.id.txt_label_owner_name);
+        textLabelZipCode = (TextView) view.findViewById(R.id.txt_label_zip_code);
         textLabelTotal = (TextView) view.findViewById(R.id.txt_label_total);
 
         pager = (LockableViewPager) view.findViewById(R.id.pager);
@@ -302,6 +308,16 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
             }
         });
 
+        editZipCodeCard.addTextChangedListener(this);
+        editZipCodeCard.setOnFocusChangeListener(this);
+        editZipCodeCard.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+        editZipCodeCard.setTag(new FieldValidator() {
+            @Override
+            public boolean isValid() {
+                return validator.validateCreditCardName(editZipCodeCard, false);
+            }
+        });
+
         btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -322,6 +338,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
                         creditCardMethod.setIssuerCode(selectedPurchaseOption.getIssuerCode());
                         creditCardMethod.setSecurityCode(editCVVCard.getText().toString());
                         creditCardMethod.setCreditCardName(editNameCard.getText().toString());
+                        creditCardMethod.setZipCode(editZipCodeCard.getText().toString());
                         creditCardMethod.setInstallments(installments);
                         applyExpiredDate(creditCardMethod);
 
@@ -407,7 +424,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
     }
 
     private void nextPage() {
-        if (pages.indexOf(lastStep) == pages.size() - 1|| cardRestored) {
+        if (pages.indexOf(lastStep) == pages.size() - 1 || cardRestored) {
             showPaymentLayout();
         } else {
             pager.setCurrentItem(pages.indexOf(lastStep) + 1);
@@ -436,6 +453,10 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
 
     public void setLabelOwnerName(String label) {
         textLabelOwnerName.setText(label);
+    }
+
+    public void setLabelZipCode(String label) {
+        textLabelZipCode.setText(label);
     }
 
     public void setTextButtonPay(String label) {
@@ -495,6 +516,10 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
             setLabelOwnerName(labelOwnerName);
         }
 
+        if (!TextUtils.isEmpty(labelZipCode)) {
+            setLabelZipCode(labelZipCode);
+        }
+
         if (!TextUtils.isEmpty(labelButtonPay)) {
             setTextButtonPay(labelButtonPay);
         }
@@ -549,6 +574,11 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
             case NAME : {
                 viewHolder.findViewById(R.id.page_four).startAnimation(anim);
                 editNameCard.setTextColor(colorFieldWrong);
+            } break;
+
+            case ZIP_CODE: {
+                viewHolder.findViewById(R.id.page_five).startAnimation(anim);
+                editZipCodeCard.setTextColor(colorFieldWrong);
             } break;
         }
     }
@@ -625,6 +655,20 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
                     btNext.setActivated(false);
                 }
             } break;
+
+            case ZIP_CODE: {
+                btNext.setVisibility(View.VISIBLE);
+
+                if (validator.validateCreditCardZipCode(editZipCodeCard, false)) {
+                    if (isEditingText) {
+                        animBtNext();
+                    }
+
+                    btNext.setActivated(true);
+                } else {
+                    btNext.setActivated(false);
+                }
+            } break;
         }
 
     }
@@ -692,6 +736,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
         editExpireCard.setText("");
         editCVVCard.setText("");
         editNameCard.setText("");
+        editZipCodeCard.setText("");
         creditCardView.clear();
 
         setIssuerCode(IssuerCode.OTHER);
@@ -734,22 +779,29 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
         }
     }
 
-
-
     public void setPagesOrder(Step... pages) throws IllegalArgumentException {
-        if (pages.length < Step.values().length) {
-            throw new IllegalArgumentException("You need provide at least " + Step.values().length + " pages");
+        if (pages.length < Step.values().length - 1 || (pages.length == Step.values().length - 1  && containsZipCode(pages))) {
+            throw new IllegalArgumentException("You need provide at least " + (Step.values().length - 1) + " pages, but only ZIP_CODE is optional");
         } else {
             this.pages = new ArrayList<>();
 
-            for (int i = 0; i < Step.values().length; i++) {
+            for (int i = 0; i < pages.length; i++) {
                 this.pages.add(pages[i]);
             }
 
-            pager.setOffscreenPageLimit(5);
+            pager.setOffscreenPageLimit(this.pages.size());
             FieldsPageAdapter adapter = new FieldsPageAdapter(viewHolder, this.pages);
             pager.setAdapter(adapter);
         }
+    }
+
+    private boolean containsZipCode(Step[] pages) {
+        for (Step page : pages) {
+            if (page.equals(Step.ZIP_CODE)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setListPurchaseOptions(List<PurchaseOption> optionList) {
@@ -858,6 +910,7 @@ public class CreditCardFragment extends Fragment implements TextWatcher, TextVie
 
             creditCardView.setTextExpDate(expireDateS);
             editExpireCard.setText(expireDateS);
+            editZipCodeCard.setText(creditCardPaymentMethod.getZipCode());
             btEdit.setVisibility(View.VISIBLE);
             switchSaveCard.setChecked(true);
             switchSaveCard.setVisibility(View.GONE);

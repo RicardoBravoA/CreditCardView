@@ -15,5 +15,6 @@ public abstract class CreditCardValidator {
     public abstract boolean validateCreditCardFlag(PurchaseOption purchaseOption, Integer portions);
     public abstract boolean validateCreditCardNumber(EditText creditCardNumber, boolean update);
     public abstract boolean validateCreditCardName(EditText creditCardName, boolean update);
+    public abstract boolean validateCreditCardZipCode(EditText creditCardZipCode, boolean update);
 
 }
