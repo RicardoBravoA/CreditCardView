@@ -24,7 +24,7 @@ In your ``build.gradle`` file:
 
 ```groovy
 dependencies {
-    compile 'com.movile:creditcardguide:1.4-beta'
+    compile 'com.movile:creditcardguide:1.2-beta'
 }
 ```
 
@@ -89,8 +89,7 @@ CreditCardFragment inputCardFragment = (CreditCardFragment) getFragmentManager()
 
 // YOU MUST set the pages order (Set a order that makes sense to the user)
 inputCardFragment.setPagesOrder(CreditCardFragment.Step.FLAG, CreditCardFragment.Step.NUMBER,
-        CreditCardFragment.Step.EXPIRE_DATE, CreditCardFragment.Step.CVV, CreditCardFragment.Step.NAME,
-        CreditCardFragment.Step.ZIP_CODE); // ZIP_CODE is optional
+        CreditCardFragment.Step.EXPIRE_DATE, CreditCardFragment.Step.CVV, CreditCardFragment.Step.NAME);
 
 // YOU MUST provide a purchase options list
 inputCardFragment.setListPurchaseOptions(getList(), 230.0);
@@ -148,7 +147,6 @@ There are some attributes that you can provide configure the fragment/view:
        app:labelExpireDate="string"
        app:labelCVV="string"
        app:labelOwnerName="string"
-       app:labelZipCode="string"
        app:labelTotal="string"
        app:installments="false|true"
        app:saveCard="false|true"
